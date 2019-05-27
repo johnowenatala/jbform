@@ -163,10 +163,10 @@
       };
 
       ns.validateFieldsOn = function($form) {
-        var $controls = ns.controls($(this));
+        var $controls = ns.controls($form);
         $controls.each(function(){
           var $control = $(this);
-          var validateEvent = $control.data['validateOn'];
+          var validateEvent = $control.data('validateOn');
           if (validateEvent) {
             $control.on(validateEvent, function(){
               ns.validate($(this));
