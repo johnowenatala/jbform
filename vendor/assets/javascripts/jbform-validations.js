@@ -107,21 +107,28 @@
       };
 
       ns.validate = function($field) {
+        var validation, i;
+        var validations = $field.data('validate');
         ns.clearError($field);
-        if ($field.is('.required, [required]')) {
-          ns.validateRequired($field);
+        if (!Array.isArray(validations)) {
+          validations = [validations];
         }
-        if (!ns.hasError($field)) {
-          var validation = $field.data('validate');
+        if ($field.is('.required, [required]') && validations.indexOf('required') === -1) {
+          validations.push('required');
+        }
+        for (i = 0; i < validations.length; i++) {
+          validation = validations[i];
           // validaciones implementadas:
           switch (validation) {
             case 'required':
               ns.validateRequired($field);
               break;
             case 'rut':
+              $field.trigger('jsform:preformat:rut');
               ns.validateRut($field);
               break;
             case 'phone':
+              $field.trigger('jsform:preformat:phone');
               ns.validatePhone($field);
               break;
           }
@@ -144,7 +151,7 @@
 
 
       /* automatizacion */
-      $('form.form-validate').each(function(){
+      $('form.jbform').each(function(){
         var $form = $(this);
         $form.on('submit',ns.validateFormOnSubmit);
         $form.on('change','.form-control.is-invalid',function(){
