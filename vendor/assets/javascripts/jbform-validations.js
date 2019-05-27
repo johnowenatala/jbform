@@ -62,6 +62,10 @@
 
         var rut = $field.val();
 
+        if (!rut) {
+          return;
+        }
+
         /*
         validacion de rut basada en https://github.com/jlobos/rut.js/
         */
@@ -69,7 +73,7 @@
             ? rut.replace(/^0+|[^0-9kK]+/g, '').toUpperCase()
             : null;
 
-        var validRut = true;
+        var validRut = false;
 
         if (rut && typeof rut === 'string') {
           var t = parseInt(rut.slice(0, -1), 10);
@@ -91,11 +95,16 @@
       ns.validatePhone = function($field) {
         var phone = $field.val();
 
+        if (!phone) {
+          return;
+        }
+
+
         phone = typeof phone === 'string'
             ? phone.replace(/[^0-9+]+/g, '')
             : null;
 
-        var validPhone = true;
+        var validPhone = false;
 
         if (phone && typeof phone === 'string') {
           validPhone = RegExp('(\\+56)?[0-9]{9}').test(phone)
