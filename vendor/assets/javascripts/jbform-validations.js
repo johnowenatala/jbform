@@ -76,15 +76,18 @@
         var validRut = false;
 
         if (rut && typeof rut === 'string') {
-          var t = parseInt(rut.slice(0, -1), 10);
-          var m = 0;
-          var s = 1;
-          while (t > 0) {
-            s = (s + (t % 10) * (9 - m++ % 6)) % 11;
-            t = Math.floor(t / 10);
+          var rutLength = rut.length;
+          if (2 <= rutLength && rutLength <= 10 ) { // largo minimo: Y-K (2) maximo: rut 100 millones 100XXXYYY-K (10)
+            var t = parseInt(rut.slice(0, -1), 10);
+            var m = 0;
+            var s = 1;
+            while (t > 0) {
+              s = (s + (t % 10) * (9 - m++ % 6)) % 11;
+              t = Math.floor(t / 10);
+            }
+            var v = s > 0 ? '' + (s - 1) : 'K';
+            validRut = (v === rut.slice(-1));
           }
-          var v = s > 0 ? '' + (s - 1) : 'K';
-          validRut = (v === rut.slice(-1));
         }
 
         if (!validRut) {
