@@ -136,7 +136,7 @@
       };
 
       ns.controls = function($form) {
-        return $form.find('.form-control');
+        return $form.find('input.form-control,select.form-control,textarea.form-control');
       };
 
       ns.validateFormOnSubmit = function(submitEvent) {
@@ -146,6 +146,7 @@
         });
         if ($controls.hasClass('is-invalid')) {
           submitEvent.preventDefault();
+          submitEvent.stopPropagation();
         }
       };
 
