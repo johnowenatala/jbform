@@ -162,6 +162,19 @@
         }
       };
 
+      ns.validateFieldsOn = function($form) {
+        var $controls = ns.controls($(this));
+        $controls.each(function(){
+          var $control = $(this);
+          var validateEvent = $control.data['validateOn'];
+          if (validateEvent) {
+            $control.on(validateEvent, function(){
+              ns.validate($(this));
+            });
+          }
+        });
+      };
+
 
       /* automatizacion */
       $('form.jbform').each(function(){
@@ -170,6 +183,7 @@
         $form.on('change','.form-control.is-invalid',function(){
           ns.validate($(this));
         });
+        ns.validateFieldsOn($form);
       });
 
     }
