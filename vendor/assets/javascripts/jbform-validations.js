@@ -21,7 +21,7 @@
         var $container = ns.container($field);
         var $element = $container.find('.invalid-feedback');
         if ($element.length == 0) {
-          $field.after('<div class="invalid-feedback"></div>');
+          $container.find('.form-control').last().after('<div class="invalid-feedback"></div>');
           $element = $container.find('.invalid-feedback');
         }
         return $element;
