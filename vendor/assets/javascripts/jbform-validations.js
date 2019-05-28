@@ -17,11 +17,15 @@
         return $field.closest('.form-group');
       };
 
+      ns.asField = function($container) {
+        return $container.find('.form-control');
+      }
+
       ns.errorElement = function($field){
         var $container = ns.container($field);
         var $element = $container.find('.invalid-feedback');
         if ($element.length == 0) {
-          $container.find('.form-control').last().after('<div class="invalid-feedback"></div>');
+          ns.asField($container).last().after('<div class="invalid-feedback"></div>');
           $element = $container.find('.invalid-feedback');
         }
         return $element;
@@ -30,8 +34,9 @@
       /* error management */
 
       ns.setError = function($field, errorType){
-        $field.addClass('is-invalid').removeClass('is-valid');
-        ns.container($field).addClass('form-group-invalid').removeClass('form-group-valid');
+        var $container = ns.container($field);
+        ns.asField($container).addClass('is-invalid').removeClass('is-valid');
+        $container.addClass('form-group-invalid').removeClass('form-group-valid');
         ns.errorElement($field).text(ns.config.messages[errorType]);
       };
 
@@ -41,11 +46,12 @@
 
       ns.clearError = function($field){
         var $container = ns.container($field);
+        var $asFieldElements = ns.asField($container);
         if (ns.hasError($field)) {
-          $field.addClass('is-valid');
+          $asFieldElements.addClass('is-valid');
           $container.addClass('form-group-valid');
         }
-        $field.removeClass('is-invalid');
+        $asFieldElements.removeClass('is-invalid');
         $container.removeClass('form-group-invalid');
         $container.find('.invalid-feedback').remove();
       };
@@ -193,4 +199,5 @@
   $(function(){ initJBFormValidate(FBForm) });
   $(document).on('turbolinks:load', function(){ initJBFormValidate(FBForm) });
 
+  // TODO: expose some functions of JBForm
 })();
