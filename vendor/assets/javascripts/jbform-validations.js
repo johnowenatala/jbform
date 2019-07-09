@@ -124,6 +124,23 @@
         }
       };
 
+      ns.validateCustom = function($field) {
+        // custom validation requires field to have a validation function
+        // function validate(errorCallback(message))
+        // where this will refer to $field
+        var validationFn = $field.data('validationFunction');
+        if (typeof validationFn !== 'function') {
+          console.error('Field with custom validation needs to define a validation function within data "validationFunction"');
+        } else {
+          validationFn.call($field,function(errorMessage){
+            ns.config.messages['custom'] = errorMessage;
+            ns.setError($field,'custom');
+            ns.config.messages['custom'] = null;
+          })
+        }
+
+      };
+
       ns.validate = function($field) {
         var validation, i;
         var validations = $field.data('validate');
@@ -149,6 +166,8 @@
               $field.trigger('jsform:preformat:phone');
               ns.validatePhone($field);
               break;
+            case 'custom':
+              ns.validateCustom($field);
           }
         }
       };
